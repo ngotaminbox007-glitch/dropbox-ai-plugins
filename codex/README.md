@@ -10,6 +10,7 @@ Use it to locate files and folders, upload generated content, summarize supporte
 - Browse folders and inspect file or folder metadata.
 - Upload and save generated content or files to Dropbox.
 - Read, preview, and summarize supported file content.
+- Generate temporary single-use download URLs for files.
 - Inspect Dropbox shared links and create or reuse shared links after confirmation.
 - Invite viewers by email when creating a shared link.
 - Create and inspect Dropbox file requests for collecting uploads.
@@ -26,6 +27,11 @@ Use it to locate files and folders, upload generated content, summarize supporte
 - `collect-files-with-request`: create, inspect, and list Dropbox file requests.
 - `organize-dropbox-folder`: create folders, copy content, and move content into a cleaner structure.
 - `clean-up-dropbox-content`: review and delete Dropbox files or folders with explicit confirmation.
+
+
+## Skill Reference
+
+For inputs, outputs, and usage examples for every skill, see [`shared/SKILL_REFERENCE.md`](../shared/SKILL_REFERENCE.md).
 
 ## Setup
 

@@ -8,7 +8,8 @@ This repository contains Dropbox's AI plugin artifacts for Claude, OpenAI Codex,
 - `codex/` contains the Codex MCP Host artifact.
 - `antigravity/` contains the Google Antigravity plugin artifact.
 - `cursor/` contains the Cursor Marketplace plugin artifact.
-- `shared/` contains shared reference material, including OAuth scope documentation.
+- `shared/` contains shared reference material, including OAuth scope documentation and the skill reference.
+- `.cursor/rules/` contains Bot and MCP plugin development rules for contributors and agents.
 
 ## MCP Host Artifacts
 
@@ -19,6 +20,8 @@ Use the MCP Host-specific directory for setup instructions, capabilities, known 
 - Google Antigravity: start with `antigravity/README.md`.
 - Cursor: start with `cursor/README.md`.
 - OAuth scopes: see `shared/OAUTH_SCOPES.md`.
+- Skill inputs, outputs, and examples: see `shared/SKILL_REFERENCE.md`.
+- Development rules: see `.cursor/rules/bot-mcp-plugin-development.mdc`.
 
 ## Authentication And Scopes
 
