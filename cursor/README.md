@@ -1,6 +1,6 @@
 # Dropbox for Cursor
 
-Dropbox for Cursor connects Cursor to your Dropbox account so you can find, inspect, save, organize, share, and clean up Dropbox content without leaving Cursor.
+Dropbox for Cursor connects Cursor to your Dropbox account so you can find, inspect, save, download, organize, share, and clean up Dropbox content without leaving Cursor.
 
 Use it to locate files and folders, save generated text content, summarize supported file content, inspect shared-link state, create or reuse shared links, invite viewers by email when requested, collect uploads with file requests, organize folders, and delete content only after explicit review.
 
@@ -10,6 +10,7 @@ Use it to locate files and folders, save generated text content, summarize suppo
 - Browse folders and inspect file or folder metadata.
 - Save generated text content into Dropbox as new files.
 - Read, preview, and summarize supported file content.
+- Generate temporary single-use download URLs for files.
 - Inspect Dropbox shared links and create or reuse shared links after confirmation.
 - Invite viewers by email when creating a shared link.
 - Create and inspect Dropbox file requests for collecting uploads.
@@ -21,17 +22,23 @@ Use it to locate files and folders, save generated text content, summarize suppo
 
 - `find-dropbox-content`: search Dropbox and browse folders without changing anything.
 - `inspect-dropbox-file`: inspect metadata, shared-link state, previews, and supported file content.
+- `download-dropbox-content`: generate temporary single-use download URLs for files.
 - `upload-to-dropbox`: save generated text content or create new text files in Dropbox.
 - `share-dropbox-content`: create, reuse, or inspect Dropbox shared links and invite viewers by email.
 - `collect-files-with-request`: create, inspect, and list Dropbox file requests.
 - `organize-dropbox-folder`: create folders, copy content, and move content into a cleaner structure.
 - `clean-up-dropbox-content`: review and delete Dropbox files or folders with explicit confirmation.
 
+
+## Skill Reference
+
+For inputs, outputs, and usage examples for every skill, see [`shared/SKILL_REFERENCE.md`](../shared/SKILL_REFERENCE.md).
+
 ## Install and Authenticate
 
 1. Install the Dropbox plugin from the Cursor Marketplace. For local testing, copy the `cursor/` directory to `~/.cursor/plugins/local/dropbox/`.
 2. Reload Cursor with **Developer: Reload Window**.
-3. Confirm Dropbox appears under **Settings > Plugins > Installed** and that the `dropbox` MCP server and all seven skills are available.
+3. Confirm Dropbox appears under **Settings > Plugins > Installed** and that the `dropbox` MCP server and all eight skills are available.
 4. When Cursor asks for Dropbox access, complete Dropbox OAuth authentication and review the requested permissions before granting access.
 
 The plugin manifest lives at `.cursor-plugin/plugin.json`, and the production Dropbox MCP endpoint is configured in `mcp.json`.
@@ -70,6 +77,7 @@ Public, anyone-with-the-link, team-wide, and editor links are not created by the
 
 - "Find the Q4 planning deck in Dropbox."
 - "Summarize this Dropbox file and tell me when it was last modified."
+- "Give me a temporary download link for this Dropbox file."
 - "Save this summary to my Dropbox Projects folder."
 - "Create a shared link for the Launch folder."
 - "Share this deck with alice@example.com."

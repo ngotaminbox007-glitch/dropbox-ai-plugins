@@ -1,6 +1,6 @@
 # Dropbox for Claude
 
-Dropbox for Claude connects Claude to your Dropbox account so you can find, inspect, save, organize, share, and clean up Dropbox content without leaving Claude.
+Dropbox for Claude connects Claude to your Dropbox account so you can find, inspect, save, download, organize, share, and clean up Dropbox content without leaving Claude.
 
 Use it to locate files and folders, save generated text content, summarize supported file content, inspect shared-link state, create or reuse shared links, invite viewers by email when requested, collect uploads with file requests, organize folders, and delete content only after explicit review.
 
@@ -10,6 +10,7 @@ Use it to locate files and folders, save generated text content, summarize suppo
 - Browse folders and inspect file or folder metadata.
 - Save generated text content into Dropbox as new files.
 - Read, preview, and summarize supported file content.
+- Generate temporary single-use download URLs for files.
 - Inspect Dropbox shared links and create or reuse shared links after confirmation.
 - Invite viewers by email when creating a shared link.
 - Create and inspect Dropbox file requests for collecting uploads.
@@ -21,11 +22,17 @@ Use it to locate files and folders, save generated text content, summarize suppo
 
 - `find-dropbox-content`: search Dropbox and browse folders without changing anything.
 - `inspect-dropbox-file`: inspect metadata, shared-link state, previews, and supported file content.
+- `download-dropbox-content`: generate temporary single-use download URLs for files.
 - `upload-to-dropbox`: save generated text content or create new text files in Dropbox.
 - `share-dropbox-content`: create, reuse, or inspect Dropbox shared links and invite viewers by email.
 - `collect-files-with-request`: create, inspect, and list Dropbox file requests.
 - `organize-dropbox-folder`: create folders, copy content, and move content into a cleaner structure.
 - `clean-up-dropbox-content`: review and delete Dropbox files or folders with explicit confirmation.
+
+
+## Skill Reference
+
+For inputs, outputs, and usage examples for every skill, see [`shared/SKILL_REFERENCE.md`](../shared/SKILL_REFERENCE.md).
 
 ## Setup
 
@@ -69,6 +76,7 @@ Public, anyone-with-the-link, team-wide, and editor links are not created by the
 
 - "Find the Q4 planning deck in Dropbox."
 - "Summarize this Dropbox file and tell me when it was last modified."
+- "Give me a temporary download link for this Dropbox file."
 - "Save this summary to my Dropbox Projects folder."
 - "Create a shared link for the Launch folder."
 - "Share this deck with alice@example.com."
