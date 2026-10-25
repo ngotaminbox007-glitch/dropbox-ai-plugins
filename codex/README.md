@@ -2,15 +2,16 @@
 
 Dropbox for Codex connects Codex to your Dropbox account so you can find, inspect, upload, organize, share, and clean up Dropbox content from a Codex session.
 
-Use it to locate files and folders, upload generated content, summarize supported file content, inspect shared-link state, create or reuse shared links, collect uploads with file requests, organize folders, and delete content only after explicit review.
+Use it to locate files and folders, upload generated content, summarize supported file content, inspect shared-link state, create or reuse shared links, invite viewers by email when requested, collect uploads with file requests, organize folders, and delete content only after explicit review.
 
 ## What You Can Do
 
 - Search Dropbox for files and folders by name, keyword, type, or location.
 - Browse folders and inspect file or folder metadata.
 - Upload and save generated content or files to Dropbox.
-- Read and summarize supported file content.
+- Read, preview, and summarize supported file content.
 - Inspect Dropbox shared links and create or reuse shared links after confirmation.
+- Invite viewers by email when creating a shared link.
 - Create and inspect Dropbox file requests for collecting uploads.
 - Create folders, copy content, move content, and check asynchronous file-operation jobs.
 - Delete files or folders only after Codex presents exact targets and receives explicit confirmation.
@@ -18,9 +19,9 @@ Use it to locate files and folders, upload generated content, summarize supporte
 ## Included Skills
 
 - `find-dropbox-content`: search Dropbox and browse folders without changing anything.
-- `inspect-dropbox-file`: inspect metadata, shared-link state, and supported file content.
+- `inspect-dropbox-file`: inspect metadata, shared-link state, previews, and supported file content.
 - `upload-to-dropbox`: save and upload generated content or files to Dropbox.
-- `share-dropbox-content`: create, reuse, or inspect Dropbox shared links.
+- `share-dropbox-content`: create, reuse, or inspect Dropbox shared links and invite viewers by email.
 - `collect-files-with-request`: create, inspect, and list Dropbox file requests.
 - `organize-dropbox-folder`: create folders, copy content, and move content into a cleaner structure.
 - `clean-up-dropbox-content`: review and delete Dropbox files or folders with explicit confirmation.
@@ -43,21 +44,21 @@ Dropbox for Codex requires these Dropbox OAuth scopes:
 - `files.content.read`: read supported file content for summaries and extraction.
 - `files.content.write`: create folders, create files, copy content, move content, delete content, and check file-operation jobs.
 - `sharing.read`: inspect Dropbox shared links.
-- `sharing.write`: create Dropbox shared links.
+- `sharing.write`: create Dropbox shared links and invite viewers.
 - `file_requests.read`: list and inspect Dropbox file requests.
 - `file_requests.write`: create Dropbox file requests.
 
 ## Safety
 
-Codex must confirm write actions before calling write-capable Dropbox tools. That includes creating folders, creating file requests, creating shared links, copying, moving, and deleting content.
+Codex must confirm write actions before calling write-capable Dropbox tools. That includes creating folders, creating file requests, creating shared links, inviting viewers, copying, moving, and deleting content.
 
 Deletion workflows require a review list with exact paths or stable identifiers before any Dropbox content is deleted. Organizing workflows should distinguish copy from move, confirm destination paths, and report pending asynchronous jobs when applicable.
 
-The Codex artifact does not grant access to named recipients or manage viewer lists. If a user asks to share directly with specific people, Codex should explain that recipient-sharing is unavailable and offer a shared link when appropriate.
+Public, anyone-with-the-link, team-wide, and editor links are not created by the Codex artifact. If a user asks for those link types, Codex should explain the limitation and offer a private view-only shared link or Dropbox web UI guidance when appropriate.
 
 ## Known Limitations
 
-- Recipient-based sharing and viewer management are not available until the required Dropbox MCP tools are exposed.
+- Public, team-wide, and editor shared links are not available through the current Dropbox MCP tools.
 - Revision history and restore workflows are not available until the required Dropbox MCP tools are exposed.
 - File content extraction depends on the supported file types and limits of the Dropbox MCP service.
 - Some file operations may complete asynchronously and require job-status checks before reporting final results.
@@ -69,6 +70,7 @@ The Codex artifact does not grant access to named recipients or manage viewer li
 - "Upload this file to my Dropbox Projects folder."
 - "Save this content to Dropbox."
 - "Create a shared link for the Launch folder."
+- "Share this deck with alice@example.com."
 - "Create a Dropbox file request for vendor invoices."
 - "Copy final PDFs into the Final folder."
 - "Review duplicate exports in this folder and ask before deleting anything."

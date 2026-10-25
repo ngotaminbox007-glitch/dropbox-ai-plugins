@@ -22,7 +22,7 @@ The OAuth authorization server is Dropbox.
 | `files.content.read` | Fetch file text content and generate download metadata. | Yes | Yes | Yes | Yes |
 | `files.content.write` | Create files, create folders, move files, copy files, delete files, and check async file-operation jobs. | Yes | Yes | Yes | Yes |
 | `sharing.read` | List shared links and read shared-link metadata. | Yes | Yes | Yes | Yes |
-| `sharing.write` | Create shared links. | Yes | Yes | Yes | Yes |
+| `sharing.write` | Create shared links and invite viewers by email. | Yes | Yes | Yes | Yes |
 | `file_requests.read` | List and inspect file requests. | Yes | Yes | Yes | Yes |
 | `file_requests.write` | Create file requests. | Yes | Yes | Yes | Yes |
 
@@ -47,7 +47,7 @@ The Codex artifact points at `chatgpt_app_mcp`.
 | `create_folder` | `files.content.write` | Creates a Dropbox folder. |
 | `create_file` | `files.content.write` | Creates a text-oriented Dropbox file. |
 | `upload_file` | `files.content.write` | Uploads files or content to Dropbox. |
-| `create_shared_link` | `sharing.write` | Creates or reuses a shared link. |
+| `create_shared_link` | `sharing.write` | Creates or reuses a shared link and can invite viewers by email. |
 | `move` | `files.content.write` | Moves Dropbox content. |
 | `copy` | `files.content.write` | Copies Dropbox content. |
 | `delete` | `files.content.write` | Deletes Dropbox content. |
@@ -74,7 +74,7 @@ The Claude artifact points at `claude_app_mcp`.
 | `create_folder` | `files.content.write` | Creates a Dropbox folder. |
 | `create_file` | `files.content.write` | Creates a text-oriented Dropbox file. |
 | `upload_file` | `files.content.write` | Uploads files or content to Dropbox. |
-| `create_shared_link` | `sharing.write` | Creates or reuses a shared link. |
+| `create_shared_link` | `sharing.write` | Creates or reuses a shared link and can invite viewers by email. |
 | `move` | `files.content.write` | Moves Dropbox content. |
 | `copy` | `files.content.write` | Copies Dropbox content. |
 | `delete` | `files.content.write` | Deletes Dropbox content. |
@@ -101,7 +101,7 @@ The Cursor artifact points at `cursor_app_mcp`.
 | `create_folder` | `files.content.write` | Creates a Dropbox folder. |
 | `create_file` | `files.content.write` | Creates a text-oriented Dropbox file. |
 | `upload_file` | `files.content.write` | Uploads files or content to Dropbox. |
-| `create_shared_link` | `sharing.write` | Creates or reuses a shared link. |
+| `create_shared_link` | `sharing.write` | Creates or reuses a shared link and can invite viewers by email. |
 | `move` | `files.content.write` | Moves Dropbox content. |
 | `copy` | `files.content.write` | Copies Dropbox content. |
 | `delete` | `files.content.write` | Deletes Dropbox content. |
@@ -129,7 +129,7 @@ The Antigravity artifact points at `gemini_app_mcp`.
 | `create_folder` | `files.content.write` | Creates a Dropbox folder. |
 | `create_file` | `files.content.write` | Creates a text-oriented Dropbox file. |
 | `upload_file` | `files.content.write` | Uploads files or content to Dropbox. |
-| `create_shared_link` | `sharing.write` | Creates or reuses a shared link. |
+| `create_shared_link` | `sharing.write` | Creates or reuses a shared link and can invite viewers by email. |
 | `move` | `files.content.write` | Moves Dropbox content. |
 | `copy` | `files.content.write` | Copies Dropbox content. |
 | `delete` | `files.content.write` | Deletes Dropbox content. |

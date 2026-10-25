@@ -26,7 +26,7 @@ Use this skill to help users collect files from others through Dropbox file requ
 5. If the destination folder does not exist and the user wants it created, use `create_folder` only after explicit confirmation.
 6. Before calling `create_file_request`, confirm the title, destination folder, deadline if applicable, and whether the request should be open or closed if that option is available.
 7. Use `get_file_request` for a known raw request ID.
-8. Use `list_file_requests` when the user asks for existing requests or cannot identify one.
+8. Use `list_file_requests` when the user asks for existing requests or cannot identify one. Continue while the response indicates has_more or returns a cursor before claiming the listing is complete.
 9. After creating or finding a request, explain the request URL and where uploaded files will land.
 
 ## Confirmation Required

@@ -13,15 +13,17 @@ Use this skill to locate relevant Dropbox files and folders without changing any
 - `search`
 - `list_folder`
 - `get_file_metadata`
+- `who_am_i`
 
 ## Workflow
 
 1. Clarify the search target only if the user request is too broad to act on.
-2. Use `search` for broad keyword, title, file type, or natural-language searches.
-3. When `search` returns a cursor and more results are needed, continue with `search` using the cursor only.
-4. Use `list_folder` with `recursive=false` when the user names a folder or wants to browse a location.
-5. When `list_folder` returns a cursor and more folder results are needed, continue with `list_folder` using the cursor only.
+2. Use `who_am_i` when team versus personal namespace context matters for interpreting paths or roots.
+3. Use `search` for broad keyword, title, file type, or natural-language searches.
+4. When `search` returns a cursor and more results are needed, continue with `search` using the cursor only. Do not claim completeness while a cursor remains.
+5. Use `list_folder` when the user names a folder or wants to browse a location. Continue with the returned cursor when more folder results are needed.
 6. Use `get_file_metadata` for strong candidates before presenting a final recommendation.
+7. Prefer returned file IDs for any follow-on Dropbox tool calls. Prefer path_display when showing paths to the user. Keep namespace paths intact when a tool returns them.
 
 ## Output
 
@@ -29,10 +31,10 @@ Return the best matches first. For each result, include:
 
 - Name
 - Object type: file or folder
-- Path or stable identifier
+- Path or stable identifier, preferring path_display and file ID when available
 - Modified time when available
 - Why it matched the request
-- Any ambiguity or confidence caveat
+- Any ambiguity, pagination caveat, or confidence caveat
 
 ## Safety
 
@@ -50,5 +52,5 @@ Do not create, copy, move, delete, restore, download, or share content. If the u
 
 - The user already provided an exact file and wants its content inspected. Use `inspect-dropbox-file`.
 - The user explicitly asks to create a shared link. Use `share-dropbox-content`.
-- The user asks to add viewers or share directly with named recipients. Explain that recipient-sharing is unavailable until the required MCP tools are exposed.
+- The user asks to share with named recipients. Use `share-dropbox-content`.
 - The user asks to restore or recover content. Explain that recovery is unavailable until the Dropbox restore tool is exposed.
