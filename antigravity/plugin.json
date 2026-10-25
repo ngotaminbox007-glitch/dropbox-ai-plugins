@@ -19,7 +19,7 @@
   "suggestedPrompts": [
     "Find and summarize the Q4 planning deck in Dropbox",
     "Save this summary to my Dropbox Projects folder",
-    "Create a shared link for the Launch folder"
+    "Give me a temporary download link for this Dropbox file"
   ],
   "logo": "./assets/logo.png"
 }

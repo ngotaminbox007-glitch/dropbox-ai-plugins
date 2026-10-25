@@ -15,6 +15,7 @@ Use this skill to save generated text content or create new text files in Dropbo
 - `list_folder`
 - `search`
 - `get_file_metadata`
+- `file_preview`
 
 ## Workflow
 
@@ -25,8 +26,9 @@ Use this skill to save generated text content or create new text files in Dropbo
 5. Optionally use `get_file_metadata` when a same-name conflict is likely. If a file already exists, stop and ask whether to use a different filename; do not overwrite.
 6. Before calling `create_file`, confirm the exact destination path, filename, and content summary with the user.
 7. After a successful create, report that the file was created, including the path_display when available, filename, and file ID.
-8. If `create_file` returns a name conflict, stop and ask the user before trying another name.
-9. If the user wants a shared link, switch to `share-dropbox-content`. Do not create a shared link from this skill.
+8. After a successful create, call `file_preview` with the returned file ID when the host supports previews, and include any open-in-Dropbox URL in the response.
+9. If `create_file` returns a name conflict, stop and ask the user before trying another name.
+10. If the user wants a shared link, switch to `share-dropbox-content`. Do not create a shared link from this skill.
 
 ## Confirmation Required
 
@@ -45,6 +47,7 @@ After a successful create, return:
 - File ID when returned
 - Confirmation that the file was created
 - File size only when the tool returns it
+- Open-in-Dropbox link when `file_preview` returns one
 
 If `create_file` returns a name conflict, report the conflict and wait for the user to choose another name.
 
@@ -71,4 +74,5 @@ Prefer specific destination folders over generic locations like the user's root 
 - The user wants to share existing content. Use `share-dropbox-content`.
 - The user wants to find existing files. Use `find-dropbox-content`.
 - The user wants to read or inspect existing files. Use `inspect-dropbox-file`.
+- The user wants a temporary download URL for an existing file. Use `download-dropbox-content`.
 - The user wants to delete files. Use `clean-up-dropbox-content`.

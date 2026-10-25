@@ -60,5 +60,6 @@ This is a read-only workflow. Do not create links, change sharing, copy, move, d
 ## Do Not Use When
 
 - The user only wants to search or browse. Use `find-dropbox-content`.
+- The user wants a temporary download URL. Use `download-dropbox-content`.
 - The user wants to create a shared link or invite viewers. Use `share-dropbox-content`.
 - The user wants to restore a revision. Explain that recovery is unavailable until the Dropbox restore tool is exposed.

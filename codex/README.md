@@ -1,6 +1,6 @@
 # Dropbox for Codex
 
-Dropbox for Codex connects Codex to your Dropbox account so you can find, inspect, upload, organize, share, and clean up Dropbox content from a Codex session.
+Dropbox for Codex connects Codex to your Dropbox account so you can find, inspect, upload, download, organize, share, and clean up Dropbox content from a Codex session.
 
 Use it to locate files and folders, upload generated content, summarize supported file content, inspect shared-link state, create or reuse shared links, invite viewers by email when requested, collect uploads with file requests, organize folders, and delete content only after explicit review.
 
@@ -20,6 +20,7 @@ Use it to locate files and folders, upload generated content, summarize supporte
 
 - `find-dropbox-content`: search Dropbox and browse folders without changing anything.
 - `inspect-dropbox-file`: inspect metadata, shared-link state, previews, and supported file content.
+- `download-dropbox-content`: generate temporary single-use download URLs for files.
 - `upload-to-dropbox`: save and upload generated content or files to Dropbox.
 - `share-dropbox-content`: create, reuse, or inspect Dropbox shared links and invite viewers by email.
 - `collect-files-with-request`: create, inspect, and list Dropbox file requests.
@@ -67,6 +68,7 @@ Public, anyone-with-the-link, team-wide, and editor links are not created by the
 
 - "Find the Q4 planning deck in Dropbox."
 - "Summarize this Dropbox file and tell me when it was last modified."
+- "Give me a temporary download link for this Dropbox file."
 - "Upload this file to my Dropbox Projects folder."
 - "Save this content to Dropbox."
 - "Create a shared link for the Launch folder."
