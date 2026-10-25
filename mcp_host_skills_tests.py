@@ -90,17 +90,16 @@ SHARED_SKILL_NAMES = {
 }
 
 EXPECTED_SKILL_NAMES = {
-    "claude": SHARED_SKILL_NAMES,
+    "claude": SHARED_SKILL_NAMES | {"upload-to-dropbox"},
     "codex": SHARED_SKILL_NAMES | {"upload-to-dropbox"},
-    "cursor": SHARED_SKILL_NAMES,
-    "antigravity": SHARED_SKILL_NAMES,
+    "cursor": SHARED_SKILL_NAMES | {"upload-to-dropbox"},
+    "antigravity": SHARED_SKILL_NAMES | {"upload-to-dropbox"},
 }
 
-# Skills that may intentionally diverge on Codex when it has extra sibling
-# skills (for example Codex-only upload routing notes).
-CODEX_SPECIFIC_SKILL_CONTENT = {
-    "collect-files-with-request",
-}
+# Skills that may intentionally diverge across hosts even when tool sets match.
+# Hosts with different upload tools already skip the identical-content check
+# because their Tools sections differ.
+CODEX_SPECIFIC_SKILL_CONTENT: set[str] = set()
 
 MANIFEST_PATHS = {
     "claude": Path("claude/.claude-plugin/plugin.json"),
