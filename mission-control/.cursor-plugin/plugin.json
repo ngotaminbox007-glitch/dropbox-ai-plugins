@@ -1,0 +1,21 @@
+{
+  "name": "mission-control",
+  "description": "Mission Control chief-of-staff plugin: 6 AM briefing, office traffic control, 10 VA/ops workflow skills, and Dropbox skill routing. Not food.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Mission Control"
+  },
+  "logo": "./assets/logo-light.png",
+  "license": "Apache-2.0",
+  "keywords": [
+    "mission-control",
+    "chief-of-staff",
+    "va",
+    "offices",
+    "traffic",
+    "briefing",
+    "workflow"
+  ],
+  "category": "Productivity",
+  "skills": "./skills/"
+}
