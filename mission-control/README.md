@@ -10,6 +10,15 @@ Chief-of-staff plugin for Tam's 7 offices. **Not food.**
 | --- | --- |
 | `mission-control-core` | Mission Control |
 | `office-router` | Mission Control |
+| `org-performance-connectors` | Mission Control + org-performance pack |
+
+### Org performance plugins (companion)
+
+Vendored in `/org-performance/`; also installed under `~/.cursor/plugins/local/`:
+
+- `continual-learning` — memory into `AGENTS.md`
+- `advisor` — second opinion on decisions
+- `orchestrate` — parallel cloud agents (needs API key)
 
 ### Ops pack (10 office fixes)
 

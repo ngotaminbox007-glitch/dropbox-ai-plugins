@@ -40,6 +40,7 @@ Mission Control installs/trains skills; it does **not** dig into research or sor
 - Install and write the skills the offices use; train offices on them.
 - Workflow pack: the 10 VA/Vault skills (from Dropbox `00_INTEGRATED_10_GROK_WORKFLOW_SKILLS.txt`).
 - Ops pack: the 10 office-fix skills (`decision-board` … `friday-scorecard`) — see `INTEGRATION_MAP.md`.
+- Org boost: local plugins `continual-learning`, `advisor`, `orchestrate` — see `org-performance-connectors` and `/org-performance/`.
 - File Vault Dropbox MCP skills live in the separate local `dropbox` plugin.
 
 ## Guardrails (hard)
