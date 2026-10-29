@@ -29,6 +29,35 @@ export function redactBody(text: string): { text: string; reasons: string[] } {
   return { text: redacted, reasons: [...reasons] };
 }
 
+/** Refuse Slack-bound text the same way comment bodies are gated. */
+export function assertSafeSlackText(
+  body: string,
+  label = "body",
+  opts: { enforceMaxChars?: boolean } = {}
+): string {
+  const enforceMax = opts.enforceMaxChars !== false;
+  const result = redactBody(body);
+  const reasons = enforceMax
+    ? result.reasons
+    : result.reasons.filter(r => !r.startsWith("exceeds "));
+  if (reasons.length === 0) return result.text;
+  throw new Error(`${label} refused: ${reasons.join("; ")}`);
+}
+
+/**
+ * Scan file bytes before Slack upload. Text is checked as UTF-8; binary
+ * payloads are still scanned as latin1 so ASCII secret assignments surface.
+ */
+export function assertSafeSlackFileContent(
+  content: Buffer,
+  label = "file upload"
+): void {
+  const asUtf8 = content.toString("utf8");
+  const sample =
+    asUtf8.length > 64_000 ? asUtf8.slice(0, 64_000) : asUtf8;
+  assertSafeSlackText(sample, label, { enforceMaxChars: false });
+}
+
 function redactSensitiveAssignments(
   text: string,
   reasons: Set<string>

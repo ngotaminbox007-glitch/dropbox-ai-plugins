@@ -24,7 +24,7 @@ Maps the 10 office fixes to tools, MCP servers, and skills already available to 
 
 | System | What MC uses it for |
 | --- | --- |
-| **Notion** | Team Task Board `collection://beac7676-e141-4129-abe4-385c63b12b43`; Master Command Center `373d0a54-f544-81f1-81f9-dafee3343ab9`; Decision Board (to create); security/credit cards |
+| **Notion** | Team Task Board `(Team Task Board id — private operator config)`; Master Command Center `(Master Command Center id — private operator config)`; Decision Board (to create); security/credit cards |
 | **Dropbox** | File Vault search/move/copy; SCCHA pile under `/Pictures of the day/`; Housing vault `/02_Personal/Housing/`; notes `/06_AI_Notes/`; Ready_to_sending draft lane |
 | **Google Calendar** | Deadline events + reminders (phone alarm path) |
 | **Gmail** | Brief/scorecard drafts (DRAFT ONLY); security/credit mail search |
@@ -77,7 +77,7 @@ When Tam picks numbers, default enable order for active fires first:
 
 - Nothing outbound until Tam says **send**
 - Never invent filings, deadlines, or exhibits
-- Never email Elizabeth Caballero
-- VA file ending **2054** only; never print full SSN
+- Never email the blocked third-party contact
+- VA file ending **(approved suffix in private operator config)** only; never print full SSN
 - Ready_to_sending = DRAFT-ONLY until SEND
 - Not food

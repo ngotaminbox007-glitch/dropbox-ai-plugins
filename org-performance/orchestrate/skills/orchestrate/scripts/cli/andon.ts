@@ -1,5 +1,6 @@
 import type { Command } from "commander";
 import { appendAgentFooter } from "../core/agent-manager.ts";
+import { assertSafeSlackText } from "../core/redact-body.ts";
 import {
   assertOperatorModeOrBail,
   errorMessage,
@@ -52,7 +53,8 @@ export function registerAndonCommands(program: Command): void {
       }) => {
         try {
           const { slack, ref } = loadAndonTargetOrBail(opts);
-          const head = `${ANDON_RAISED_PREFIX} by ${opts.sender}: ${opts.reason}`;
+          const safeReason = assertSafeSlackText(opts.reason, "andon reason");
+          const head = `${ANDON_RAISED_PREFIX} by ${opts.sender}: ${safeReason}`;
           await slack.postCommentInThread({
             threadTs: ref.ts,
             text: appendAgentFooter(head, opts.agentId),
@@ -101,8 +103,11 @@ export function registerAndonCommands(program: Command): void {
           );
           const { slack, ref } = loadAndonTargetOrBail(opts);
           const note = opts.note?.trim();
-          const head = note
-            ? `${ANDON_CLEARED_PREFIX} by ${opts.sender}: ${note}`
+          const safeNote = note
+            ? assertSafeSlackText(note, "andon clear note")
+            : undefined;
+          const head = safeNote
+            ? `${ANDON_CLEARED_PREFIX} by ${opts.sender}: ${safeNote}`
             : `${ANDON_CLEARED_PREFIX} by ${opts.sender}`;
           await slack.postCommentInThread({
             threadTs: ref.ts,

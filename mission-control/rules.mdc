@@ -26,9 +26,9 @@ Mail & Schedule · Money & Debt · VA Benefits · File Vault · School & Work ·
 - Nothing goes out until Tam says **send**.
 - Never invent facts or filings (draft ≠ filing).
 - No government submissions.
-- Never email Elizabeth Caballero.
+- Never email contacts on the private do-not-email list.
 - Never invent exhibits, hours, exam sites, or Blue Button pages.
-- VA file ending **2054** only; never print full SSN.
+- VA file ending **(approved suffix in private operator config)** only; never print full SSN.
 - Ready_to_sending = DRAFT-ONLY until SEND.
 - Do not dig into research or sort inbox yourself — route to the owning office.
 - Do not treat food/restaurant plugins as Mission Control work.
@@ -43,6 +43,6 @@ Mail & Schedule · Money & Debt · VA Benefits · File Vault · School & Work ·
 
 ## Board
 
-Notion Team Task Board for Tam's 7 assistant offices (`collection://beac7676-e141-4129-abe4-385c63b12b43`).  
-Master Command Center: `373d0a54-f544-81f1-81f9-dafee3343ab9`.  
+Notion Team Task Board for Tam's 7 assistant offices (`(Team Task Board id — private operator config)`).  
+Master Command Center: `(Master Command Center id — private operator config)`.  
 Integration detail: `INTEGRATION_MAP.md`.

@@ -22,8 +22,8 @@ Replace dozens of scattered brief notes with **one** live board. Each row = one 
 | Source | URL / text | Brief note / task card ID |
 | Batch | Select | Optional group for batch-backlog-clear |
 
-Parent page: Master Command Center `373d0a54-f544-81f1-81f9-dafee3343ab9`  
-Feed from: Team Task Board `collection://beac7676-e141-4129-abe4-385c63b12b43` (Status = Waiting on Tam)
+Parent page: Master Command Center `(Master Command Center id — private operator config)`  
+Feed from: Team Task Board `(Team Task Board id — private operator config)` (Status = Waiting on Tam)
 
 ## Tools
 

@@ -17,4 +17,4 @@ Assemble exactly three pieces:
 - Run `legal-pile-gatekeeper` then `dropbox-preflight-fact-check` first.
 - DRAFT-ONLY — no QuickSubmit / eBenefits / email until Tam says **send**.
 - Production PDF colors when printing: Navy `#1B365D`, Gold `#C5A572`.
-- File ending 2054 only; never print full SSN.
+- File ending (approved suffix in private operator config) only; never print full SSN.
