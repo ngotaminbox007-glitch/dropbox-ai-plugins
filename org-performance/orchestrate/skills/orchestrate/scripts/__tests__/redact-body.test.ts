@@ -1,6 +1,10 @@
 import { describe, expect, test } from "bun:test";
 
-import { redactBody } from "../core/redact-body.ts";
+import {
+  assertSafeSlackFileContent,
+  assertSafeSlackText,
+  redactBody,
+} from "../core/redact-body.ts";
 
 describe("redactBody", () => {
   test("refuses filepath-shaped bodies", () => {
@@ -48,5 +52,18 @@ describe("redactBody", () => {
       text: "blocked: docker rate-limit on redis:7",
       reasons: [],
     });
+  });
+
+  test("assertSafeSlackText refuses secret assignments", () => {
+    expect(() =>
+      assertSafeSlackText("api_key=super-secret-value", "andon reason")
+    ).toThrow(/andon reason refused/);
+  });
+
+  test("assertSafeSlackFileContent refuses secret assignments in uploads", () => {
+    const payload = Buffer.from("token = leaked-value\nnotes ok\n", "utf8");
+    expect(() =>
+      assertSafeSlackFileContent(payload, "--file notes.txt")
+    ).toThrow(/--file notes\.txt refused/);
   });
 });

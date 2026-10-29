@@ -31,5 +31,5 @@ disable-model-invocation: false
 ## Rules
 
 - Still ≤7 decisions/day; advisor improves quality, does not raise the cap.  
-- Orchestrate does not bypass SEND / Caballero / draft-only guards.  
+- Orchestrate does not bypass SEND / do-not-email list / draft-only guards.  
 - Not food.

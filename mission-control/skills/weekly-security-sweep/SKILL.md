@@ -43,5 +43,5 @@ Need you: …
 ## Rules
 
 - Never print full SSN, full account numbers, or password values.
-- Never email Elizabeth Caballero.
+- Never email contacts on the private do-not-email list.
 - Flag FoundersCard / ChatGPT export style cards already on the board — do not duplicate.

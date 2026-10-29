@@ -12,7 +12,7 @@ disable-model-invocation: false
 
 ## Method
 
-1. Pull all `Waiting on Tam` from Team Task Board (`collection://beac7676-e141-4129-abe4-385c63b12b43`).
+1. Pull all `Waiting on Tam` from Team Task Board (`(Team Task Board id — private operator config)`).
 2. Cluster into **batch decisions** (3–8 batches), e.g.:
    - File / archive duplicates (SCCHA, Drive publics)
    - Security OK (sign-in / credit / password resets)

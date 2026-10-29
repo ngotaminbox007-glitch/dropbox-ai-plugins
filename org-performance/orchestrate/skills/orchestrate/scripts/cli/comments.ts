@@ -5,7 +5,10 @@ import type { Command } from "commander";
 import { createSlackAdapter } from "../adapters/index.ts";
 import { appendAgentFooter } from "../core/agent-manager.ts";
 import { postOrQueueComment } from "../core/comment-retry-queue.ts";
-import { redactBody } from "../core/redact-body.ts";
+import {
+  assertSafeSlackFileContent,
+  assertSafeSlackText,
+} from "../core/redact-body.ts";
 import { type Plan, parsePlanJson, parseStateJson } from "../schemas.ts";
 import {
   type CommentOptions,
@@ -150,9 +153,10 @@ async function uploadFileToThread(args: {
     throw new Error("SLACK_BOT_TOKEN not set; cannot upload Slack file");
   }
   const content = readFileSync(args.filePath);
+  assertSafeSlackFileContent(content, `--file ${basename(args.filePath)}`);
   const initial =
     args.initialComment ?? `${args.sender} attached ${basename(args.filePath)}`;
-  const safeInitial = requireSafeCommentBody(initial);
+  const safeInitial = assertSafeSlackText(initial, "initial comment");
   await slack.uploadFileToThread({
     threadTs: args.threadTs,
     filename: basename(args.filePath),
@@ -162,9 +166,7 @@ async function uploadFileToThread(args: {
 }
 
 function requireSafeCommentBody(body: string): string {
-  const result = redactBody(body);
-  if (result.reasons.length === 0) return result.text;
-  throw new Error(`comment body refused: ${result.reasons.join("; ")}`);
+  return assertSafeSlackText(body, "comment body");
 }
 
 // Canonicalizes both paths via realpath so symlinks can't escape the
