@@ -1,5 +1,5 @@
 id,title,status,lead_office,support_office,loop_count,notes,updated
-D001,ETASV refresh and grab,Active,VA Benefits,File Vault,0,Refresh ETASV package; draft only until approval,2026-10-30
+D001,ETASV refresh and grab,Active,School & Work,Mail & Schedule,0,Refresh ETASV package; draft only until approval,2026-10-30
 D003,Calendar reminder cleanup,Active,Mail & Schedule,Mission Control,0,Calendar + alarms are the reminder system,2026-10-30
 D004,Bill and subscription sweep,Waiting,Money & Debt,Mail & Schedule,1,List bills/subs; no pay without approval,2026-10-29
 D005,Duplicate cleanup,Needs Approval,File Vault,Mission Control,0,Flag duplicates; no delete without approval,2026-10-30

@@ -1,9 +1,9 @@
 id,title,status,lead_office,support_office,loop_count,notes,updated
-D001,ETASV refresh and grab,Active,VA Benefits,File Vault,0,Refresh ETASV package; draft only until approval,2026-10-30
+D001,ETASV refresh and grab,Active,School & Work,Mail & Schedule,0,Refresh ETASV package; draft only until approval,2026-10-30
 D002,Old HLR review,Stale,VA Benefits,File Vault,2,Old HLR pile — review then archive or resolve,2026-09-01
 D003,Calendar reminder cleanup,Active,Mail & Schedule,Mission Control,0,Calendar + alarms are the reminder system,2026-10-30
 D004,Bill and subscription sweep,Waiting,Money & Debt,Mail & Schedule,1,List bills/subs; no pay without approval,2026-10-29
 D005,Duplicate cleanup,Needs Approval,File Vault,Mission Control,0,Flag duplicates; no delete without approval,2026-10-30
 D006,Newsletter draft,Active,Photo Design & Creation,Mail & Schedule,0,Draft only — not a send,2026-10-30
 D007,Daily brief,Active,Mission Control,Mail & Schedule,0,Top items for operator; max 7 approvals/day,2026-10-31
-D008,Old ETASV reminder,Stale,VA Benefits,Mail & Schedule,3,Looped 3 times — escalate; review archive or resolve,2026-08-15
+D008,Old ETASV reminder,Stale,School & Work,Mail & Schedule,3,Looped 3 times — escalate; review archive or resolve,2026-08-15
