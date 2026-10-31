@@ -4,5 +4,5 @@ Mail & Schedule,Mailroom and calendar,"Email drafts, calendar, alarms, reminders
 Money & Debt,Money desk,"Bills, debt, subscriptions, collectors, payment prep",when_lead,"forbidden without approval: pay, send, share"
 VA Benefits,VA claims and housing benefits,"VA claims, HLR, exams, HUD-VASH, evidence prep",when_lead,"forbidden without approval: government_filing, send, file, share"
 File Vault,Records and vault,"Files, indexes, duplicates, backups, exposure checks",when_lead,"forbidden without approval: delete, share, file"
-School & Work,Career and school,"IBEW/ETASV, classes, jobs, time tickets",when_lead,"forbidden without approval: send, share, file"
+School & Work,Career and school,"IBEW/ETASV, classes, jobs, time tickets",when_lead,"forbidden without approval: delete, file, pay, send, share"
 Photo Design & Creation,Photo and design,"Photos, design drafts, newsletters, creative assets",when_lead,"forbidden without approval: send, share"
