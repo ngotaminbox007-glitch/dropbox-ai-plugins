@@ -1,0 +1,6 @@
+approval_id,decision_id,title,lead_office,action_type,ask,priority,status,created_at
+A001,D003,Calendar reminder cleanup,Mail & Schedule,high_risk_gate,Approve next step for: Calendar reminder cleanup,normal,awaiting_approval,2026-10-31T07:34:13
+A002,D004,Bill and subscription sweep,Money & Debt,high_risk_gate,Approve next step for: Bill and subscription sweep,normal,awaiting_approval,2026-10-31T07:34:13
+A003,D005,Duplicate cleanup,File Vault,high_risk_gate,Approve next step for: Duplicate cleanup,normal,awaiting_approval,2026-10-31T07:34:13
+A004,D006,Newsletter draft,Photo Design & Creation,high_risk_gate,Approve next step for: Newsletter draft,normal,awaiting_approval,2026-10-31T07:34:13
+A005,D008,Escalate loop D008,School & Work,escalate_loop,loop_count 3 >= 3; escalate,high,awaiting_approval,2026-10-31T07:34:13

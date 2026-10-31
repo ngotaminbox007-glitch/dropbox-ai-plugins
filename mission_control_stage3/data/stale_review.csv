@@ -1,0 +1,3 @@
+id,title,status,urgency,lead_office,support_office,needs_approval,loop_count,due_date,missing_fields,notes,created_at,updated_at
+D002,Old HLR review,Stale,low,VA Benefits,File Vault,no,2,2026-10-15,,Old Higher-Level Review item — review and archive or resolve.,2026-10-31T00:00:00,2026-10-31T00:00:00
+D008,Old ETASV reminder,Stale,high,School & Work,Mail & Schedule,no,3,2026-10-20,,Looped 3 times — escalate; review and archive or resolve.,2026-10-31T00:00:00,2026-10-31T00:00:00

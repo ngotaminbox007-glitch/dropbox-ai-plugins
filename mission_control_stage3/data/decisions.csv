@@ -1,0 +1,9 @@
+id,title,status,urgency,lead_office,support_office,needs_approval,loop_count,due_date,missing_fields,notes,created_at,updated_at
+D001,ETASV refresh and grab,Active,normal,School & Work,Mail & Schedule,no,0,2026-11-01,,Refresh ETASV status; grab next steps. Draft only until approved.,2026-10-31T00:00:00,2026-10-31T00:00:00
+D002,Old HLR review,Stale,low,VA Benefits,File Vault,no,2,2026-10-15,,Old Higher-Level Review item — review and archive or resolve.,2026-10-31T00:00:00,2026-10-31T00:00:00
+D003,Calendar reminder cleanup,Needs Approval,normal,Mail & Schedule,Mission Control,yes,0,2026-10-31,explicit_approval,Clean outdated reminders; calendar + alarms are the reminder system.,2026-10-31T00:00:00,2026-10-31T00:00:00
+D004,Bill and subscription sweep,Waiting,normal,Money & Debt,Mail & Schedule,yes,1,2026-11-01,explicit_approval,Sweep bills/subscriptions. No pay without approval.,2026-10-31T00:00:00,2026-10-31T00:00:00
+D005,Duplicate cleanup,Needs Approval,normal,File Vault,Photo Design & Creation,yes,0,2026-11-02,explicit_approval,Flag duplicates for archive. No delete/file without approval.,2026-10-31T00:00:00,2026-10-31T00:00:00
+D006,Newsletter draft,Active,normal,Photo Design & Creation,Mail & Schedule,yes,0,2026-11-03,,Draft only — drafts are not filings; no send without approval.,2026-10-31T00:00:00,2026-10-31T00:00:00
+D007,Daily brief,Active,normal,Mission Control,Mail & Schedule,no,0,2026-10-31,,Top-3 brief. Chat is coordination only — log outcomes in decisions.csv.,2026-10-31T00:00:00,2026-10-31T00:00:00
+D008,Old ETASV reminder,Stale,high,School & Work,Mail & Schedule,no,3,2026-10-20,,Looped 3 times — escalate; review and archive or resolve.,2026-10-31T00:00:00,2026-10-31T00:00:00

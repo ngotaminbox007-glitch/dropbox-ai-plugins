@@ -1,0 +1,34 @@
+{
+  "stage": 3,
+  "source_of_truth": "data/decisions.csv",
+  "chat_role": "coordination_only",
+  "live_statuses": ["Active", "Waiting", "Needs Approval"],
+  "stale_status": "Stale",
+  "max_approvals_per_day": 7,
+  "loop_escalate_at": 3,
+  "reminder_system": "calendar_and_alarms",
+  "only_lead_tells_user": true,
+  "drafts_are_not_filings": true,
+  "no_lane_crossing": true,
+  "high_risk_actions": [
+    "send_final_message",
+    "pay",
+    "delete",
+    "share_private",
+    "government_filing",
+    "file_to_vault"
+  ],
+  "allowed_without_approval": [
+    "read",
+    "validate",
+    "route",
+    "summarize",
+    "alert",
+    "queue",
+    "remind",
+    "draft",
+    "classify",
+    "intake"
+  ],
+  "notes": "Stage 3 is a safe AI-assisted routing and decision layer. Risky steps stay behind the approval gate."
+}

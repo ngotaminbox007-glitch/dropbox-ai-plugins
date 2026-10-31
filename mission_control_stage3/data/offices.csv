@@ -1,0 +1,8 @@
+office,role,lane,may_contact_user,default_support,notes
+Mission Control,Lead router / decision board,"Intake, classification oversight, live queue, daily brief, approval gate, loop escalation",yes,Mail & Schedule,No lane crossing; blocked actions need approval
+Mail & Schedule,Mailroom and calendar,"Mail sorting, calendars, deadlines, thread cleanup, reminders",when_lead,Mission Control,No lane crossing; blocked actions need approval
+Money & Debt,Money desk,"Bills, balances, subscriptions, collectors, validation letters",when_lead,Mail & Schedule,No lane crossing; blocked actions need approval
+VA Benefits,VA claims and housing benefits,"HLRs, letters, exams, claims, HUD-VASH, SCCHA",when_lead,File Vault,No lane crossing; blocked actions need approval
+File Vault,Records and vault,"Organize, backup, rename, duplicate cleanup, exposure checks",when_lead,Photo Design & Creation,No lane crossing; blocked actions need approval
+School & Work,Career and school,"ETASV, school tasks, jobs, time tickets, IBEW",when_lead,Mail & Schedule,No lane crossing; blocked actions need approval
+Photo Design & Creation,Photo and design,"Visuals, newsletters, design assets, handoffs to File Vault",when_lead,Mail & Schedule,No lane crossing; blocked actions need approval

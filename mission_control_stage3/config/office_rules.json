@@ -1,0 +1,74 @@
+{
+  "offices": [
+    {
+      "name": "Mission Control",
+      "role": "Lead router / decision board",
+      "lane": "Intake, classification oversight, live queue, daily brief, approval gate, loop escalation",
+      "may_contact_user": "yes",
+      "default_support": "Mail & Schedule",
+      "keywords": ["brief", "decision", "approval", "route", "escalate", "mission control", "queue"],
+      "allowed_actions": ["intake", "classify", "route", "summarize", "alert", "queue", "remind", "validate"],
+      "blocked_without_approval": ["send_final_message", "pay", "delete", "share_private", "government_filing", "file_to_vault"]
+    },
+    {
+      "name": "Mail & Schedule",
+      "role": "Mailroom and calendar",
+      "lane": "Mail sorting, calendars, deadlines, thread cleanup, reminders",
+      "may_contact_user": "when_lead",
+      "default_support": "Mission Control",
+      "keywords": ["mail", "email", "calendar", "deadline", "reminder", "alarm", "schedule", "thread"],
+      "allowed_actions": ["draft", "remind", "validate", "summarize", "queue"],
+      "blocked_without_approval": ["send_final_message", "delete", "share_private"]
+    },
+    {
+      "name": "Money & Debt",
+      "role": "Money desk",
+      "lane": "Bills, balances, subscriptions, collectors, validation letters",
+      "may_contact_user": "when_lead",
+      "default_support": "Mail & Schedule",
+      "keywords": ["bill", "pay", "debt", "subscription", "credit", "freeze", "collector", "diversified", "balance"],
+      "allowed_actions": ["draft", "validate", "summarize", "queue", "remind"],
+      "blocked_without_approval": ["pay", "send_final_message", "share_private"]
+    },
+    {
+      "name": "VA Benefits",
+      "role": "VA claims and housing benefits",
+      "lane": "HLRs, letters, exams, claims, HUD-VASH, SCCHA",
+      "may_contact_user": "when_lead",
+      "default_support": "File Vault",
+      "keywords": ["va", "hlr", "claim", "exam", "c&p", "hud", "sccha", "housing", "benefits", "dbq"],
+      "allowed_actions": ["draft", "validate", "summarize", "queue", "remind"],
+      "blocked_without_approval": ["government_filing", "send_final_message", "share_private", "file_to_vault"]
+    },
+    {
+      "name": "File Vault",
+      "role": "Records and vault",
+      "lane": "Organize, backup, rename, duplicate cleanup, exposure checks",
+      "may_contact_user": "when_lead",
+      "default_support": "Photo Design & Creation",
+      "keywords": ["file", "vault", "duplicate", "backup", "drive", "dropbox", "archive", "rename", "exposure"],
+      "allowed_actions": ["validate", "summarize", "queue", "propose_file_move"],
+      "blocked_without_approval": ["delete", "share_private", "file_to_vault"]
+    },
+    {
+      "name": "School & Work",
+      "role": "Career and school",
+      "lane": "ETASV, school tasks, jobs, time tickets, IBEW",
+      "may_contact_user": "when_lead",
+      "default_support": "Mail & Schedule",
+      "keywords": ["etasv", "ibew", "school", "job", "class", "timecard", "apprentice", "work"],
+      "allowed_actions": ["draft", "validate", "summarize", "queue", "remind"],
+      "blocked_without_approval": ["send_final_message", "share_private"]
+    },
+    {
+      "name": "Photo Design & Creation",
+      "role": "Photo and design",
+      "lane": "Visuals, newsletters, design assets, handoffs to File Vault",
+      "may_contact_user": "when_lead",
+      "default_support": "Mail & Schedule",
+      "keywords": ["photo", "design", "newsletter", "image", "visual", "create"],
+      "allowed_actions": ["draft", "summarize", "queue"],
+      "blocked_without_approval": ["send_final_message", "share_private", "delete"]
+    }
+  ]
+}

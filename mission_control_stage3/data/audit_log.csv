@@ -1,0 +1,2 @@
+timestamp,actor,action,decision_id,detail,risk
+2026-10-31T07:34:13,Mission Control,rebuild_queues,,live=6 stale=2 reminders=12 loops=1 approvals=5,low

@@ -1,0 +1,33 @@
+Mission Control — Daily Brief (Stage 3)
+Generated: 2026-10-31T07:34:13
+
+Source of truth: data/decisions.csv + data/live_decisions.csv
+Chat is coordination only.
+No send / pay / delete / share / file without approval.
+Only the lead office tells the user.
+
+Live decisions (6) — Active / Waiting / Needs Approval
+Approval gate: 5 queued (max 7/day)
+- [D001] ETASV refresh and grab | Active | urgency=normal | lead=School & Work support=Mail & Schedule
+- [D003] Calendar reminder cleanup | Needs Approval | urgency=normal | lead=Mail & Schedule support=Mission Control
+- [D004] Bill and subscription sweep | Waiting | urgency=normal | lead=Money & Debt support=Mail & Schedule
+- [D005] Duplicate cleanup | Needs Approval | urgency=normal | lead=File Vault support=Photo Design & Creation
+- [D006] Newsletter draft | Active | urgency=normal | lead=Photo Design & Creation support=Mail & Schedule
+- [D007] Daily brief | Active | urgency=normal | lead=Mission Control support=Mail & Schedule
+
+Stale review (2) — archive or reactivate
+- [D002] Old HLR review | loops=2 | lead=VA Benefits
+- [D008] Old ETASV reminder | loops=3 | lead=School & Work
+
+Loop alerts (1)
+- [D008] School & Work: loop_count 3 >= 3; escalate
+
+Approvals awaiting (5)
+- [A001] D003 | Mail & Schedule | Approve next step for: Calendar reminder cleanup
+- [A002] D004 | Money & Debt | Approve next step for: Bill and subscription sweep
+- [A003] D005 | File Vault | Approve next step for: Duplicate cleanup
+- [A004] D006 | Photo Design & Creation | Approve next step for: Newsletter draft
+- [A005] D008 | School & Work | loop_count 3 >= 3; escalate
+
+Reminders: data/reminder_log.csv (calendar + alarms).
+Audit: data/audit_log.csv.
