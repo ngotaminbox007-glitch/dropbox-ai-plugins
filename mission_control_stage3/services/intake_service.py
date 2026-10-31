@@ -50,11 +50,17 @@ def intake_task(raw: dict) -> dict[str, str]:
     created = now_iso()
     decision_id = next_decision_id(decisions)
 
-    needs_approval = "yes" if classification["needs_approval"] else "no"
-    status = "Needs Approval" if classification["needs_approval"] else "Active"
-    if missing:
+    # High-risk / gated items always land in Needs Approval — missing fields
+    # are recorded but must not demote the approval gate to Waiting.
+    if classification["needs_approval"]:
+        status = "Needs Approval"
+        needs_approval = "yes"
+    elif missing:
         status = "Waiting"
-        needs_approval = "yes" if classification["needs_approval"] else needs_approval
+        needs_approval = "no"
+    else:
+        status = "Active"
+        needs_approval = "no"
 
     record = {
         "id": decision_id,

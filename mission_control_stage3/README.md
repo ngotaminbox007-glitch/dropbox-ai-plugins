@@ -36,8 +36,10 @@ python3 app.py decide-approval --approval-id A001 --approve
 - Live = Active / Waiting / Needs Approval → `live_decisions.csv`
 - Stale → `stale_review.csv`
 - High-risk (`send`, `pay`, `delete`, `share`, `file`, `government_filing`) stay behind approvals
+- High-risk intake always lands as `Needs Approval` (missing fields are recorded, not demoted to Waiting)
 - Max 7 approvals/day; loop ≥3 → escalate
-- Only the lead office tells the user; no lane crossing
+- Only the lead office tells the user; no lane crossing (`no_lane_crossing` in `global_rules.json`)
+- `approval_service.is_action_allowed` enforces lanes: global `safe_without_approval` does not grant every office Mission Control actions; `approved=True` still cannot cross lanes
 - Calendar + alarms = reminder system (`reminder_log.csv`)
 - Every action appends to `audit_log.csv`
 
@@ -45,3 +47,6 @@ python3 app.py decide-approval --approval-id A001 --approve
 
 Each office includes: `name`, `role`, `lane`, `keywords`, `allowed_actions`,
 `forbidden_without_approval`, `may_contact_user`, `default_support`, `urgency_default`.
+
+An action is in-lane when it appears in that office's `allowed_actions` or
+`forbidden_without_approval`. Out-of-lane requests are rejected even after approval.

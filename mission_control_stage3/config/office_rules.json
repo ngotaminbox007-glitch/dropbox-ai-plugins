@@ -175,9 +175,11 @@
         "summarize"
       ],
       "forbidden_without_approval": [
+        "delete",
+        "file",
+        "pay",
         "send",
-        "share",
-        "file"
+        "share"
       ],
       "may_contact_user": "when_lead",
       "default_support": "Mail & Schedule",

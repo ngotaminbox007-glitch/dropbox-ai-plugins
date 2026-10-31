@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from services.common import PROMPTS, audit, load_office_rules, read_csv, DATA
+from services import approval_service
+from services.common import PROMPTS, audit, load_global_rules, load_office_rules, read_csv, DATA
 
 PROMPT_FILES = {
     "Mission Control": "mission_control_prompt.txt",
@@ -43,11 +44,23 @@ class OfficeAgent:
         """Only the lead office tells the user."""
         return decision.get("lead_office") == self.name
 
-    def assert_action_allowed(self, action: str) -> None:
-        action_l = action.lower().strip()
-        forbidden = {a.lower() for a in self.office.get("forbidden_without_approval", [])}
-        if action_l in forbidden:
+    def assert_action_allowed(self, action: str, *, approved: bool = False) -> None:
+        """Raise if action is out of lane or still needs approval."""
+        allowed, reason = approval_service.is_action_allowed(
+            action,
+            office=self.office,
+            global_rules=load_global_rules(),
+            approved=approved,
+        )
+        if allowed:
+            return
+        if reason == "lane_crossing_blocked":
             raise PermissionError(
-                f"{self.name} cannot '{action_l}' without approval. "
+                f"{self.name} cannot '{action}' — outside office lane (no_lane_crossing)."
+            )
+        if reason == "blocked_pending_approval":
+            raise PermissionError(
+                f"{self.name} cannot '{action}' without approval. "
                 "Use Mission Control approval gate."
             )
+        raise PermissionError(f"{self.name} cannot '{action}' ({reason}).")
