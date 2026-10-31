@@ -1,0 +1,8 @@
+office,lane,role
+Mission Control,"Traffic, briefs, decisions, routing",Chief of staff — assigns work; only lead office tells the user when MC is lead
+Mail & Schedule,"Email drafts, calendar, alarms, reminders",Mail and calendar only — no send without approval
+Money & Debt,"Bills, subscriptions, debt, payments",Money tracking only — no pay without approval
+VA Benefits,"VA claims, evidence, deadlines, filings prep",VA prep only — drafts are not filings
+File Vault,"Files, indexes, duplicates, vault hygiene",Records only — no delete/share/file without approval
+School & Work,"School, apprenticeship, career paperwork",Career/school lane only
+Photo Design & Creation,"Photos, design drafts, creative assets",Creative lane only — no share without approval

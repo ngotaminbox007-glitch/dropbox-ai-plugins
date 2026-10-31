@@ -1,0 +1,37 @@
+Mission Control Stage 1 Rules
+================================
+
+Source of truth = decisions list (decisions.csv).
+Chat is not the official record.
+
+Live work
+---------
+Only Active, Waiting, and Needs Approval items are live.
+Those rows appear in live_decisions.csv.
+
+Stale work
+----------
+Stale items go to stale_review.csv.
+Old items must be reviewed and archived or resolved.
+
+Approvals and actions
+---------------------
+No office may send, pay, delete, share, or file without approval.
+Drafts are not filings.
+Max 7 approvals per day.
+If an issue loops 3 times, escalate.
+
+Offices
+-------
+One lead office and one support office per item.
+Only the lead office tells the user.
+No office crosses its lane.
+
+Reminders
+---------
+Calendar + alarms are the reminder system.
+
+Stage 1 scope
+-------------
+CSV files and plain text only.
+No full AI automation yet.
