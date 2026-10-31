@@ -1,8 +1,8 @@
-office,lane,role
-Mission Control,"Traffic, briefs, decisions, routing",Chief of staff — assigns work; only lead office tells the user when MC is lead
-Mail & Schedule,"Email drafts, calendar, alarms, reminders",Mail and calendar only — no send without approval
-Money & Debt,"Bills, subscriptions, debt, payments",Money tracking only — no pay without approval
-VA Benefits,"VA claims, evidence, deadlines, filings prep",VA prep only — drafts are not filings
-File Vault,"Files, indexes, duplicates, vault hygiene",Records only — no delete/share/file without approval
-School & Work,"School, apprenticeship, career paperwork",Career/school lane only
-Photo Design & Creation,"Photos, design drafts, creative assets",Creative lane only — no share without approval
+office,role,lane,may_contact_user,notes
+Mission Control,Lead router / decision board,"Decisions, briefs, batch asks, escalation",yes,Only lead office tells the user when MC is lead
+Mail & Schedule,Mailroom and calendar,"Drafts, mail prep, calendar, alarms",when_lead,No send without approval; drafts are not filings
+Money & Debt,Money desk,"Bills, collectors, subscriptions, validation letters",when_lead,No pay / no mail Certified without approval
+VA Benefits,VA claims and housing benefits,"VA deadlines, HLR, HUD-VASH, SCCHA packets",when_lead,No file or send without approval
+File Vault,Records and vault,"Filing, duplicates, exposure, backups",when_lead,No delete / share / file without approval
+School & Work,Career and school,"IBEW/ETASV, classes, job applications",when_lead,No send without approval
+Photo Design & Creation,Photo and design,"Photos, design assets, handoffs to File Vault",when_lead,No share without approval
