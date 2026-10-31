@@ -9,6 +9,7 @@ This repository contains Dropbox's AI plugin artifacts for Claude, OpenAI Codex,
 - `antigravity/` contains the Google Antigravity plugin artifact.
 - `cursor/` contains the Cursor Marketplace plugin artifact.
 - `food/` contains the local Food Mission Cursor plugin (restaurant list generator, best restaurant finder, Dropbox save). It is not part of the public Dropbox marketplace package.
+- `mission_control_stage3/` contains the Stage 3 Mission Control safe routing/decision layer (intake, classify, route, approve, brief, audit). Run `python3 mission_control_stage3/app.py init`.
 - `shared/` contains shared reference material, including OAuth scope documentation and the skill reference.
 - `.cursor/rules/` contains Bot and MCP plugin development rules for contributors and agents.
 
