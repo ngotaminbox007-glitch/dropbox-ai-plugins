@@ -4,3 +4,4 @@ AGENTS.local.md
 # Local advisor / learning runtime state
 .cursor/advisor/
 .cursor/hooks/state/
+__pycache__
