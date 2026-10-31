@@ -6,6 +6,7 @@
   "stale_status": "Stale",
   "max_approvals_per_day": 7,
   "loop_escalate_at": 3,
+  "no_lane_crossing": true,
   "reminder_system": "calendar_and_alarms",
   "high_risk_actions": [
     "send",
