@@ -251,11 +251,14 @@ BOT_PROMPTS = {
     ),
     "file_vault_prompt.txt": (
         "You are the File Vault bot. You organize, back up, rename, and clean "
-        "duplicate files. You may not delete or share private files without approval."
+        "duplicate files. You may not delete, share, or file records without "
+        "approval."
     ),
     "school_work_prompt.txt": (
         "You are the School & Work bot. You manage ETASV, school tasks, deadlines, "
-        "jobs, and time tickets. Keep only active items in your queue."
+        "jobs, and time tickets. Keep only active items in your queue. You may "
+        "draft applications, but you may not send, pay, delete, share, or file "
+        "without approval."
     ),
     "photo_design_prompt.txt": (
         "You are the Photo Design & Creation bot. You generate visuals and "

@@ -58,7 +58,13 @@
       "default_support": "Mail & Schedule",
       "keywords": ["etasv", "ibew", "school", "job", "class", "timecard", "apprentice", "work"],
       "allowed_actions": ["draft", "validate", "summarize", "queue", "remind"],
-      "blocked_without_approval": ["send_final_message", "share_private"]
+      "blocked_without_approval": [
+        "send_final_message",
+        "pay",
+        "delete",
+        "share_private",
+        "file_to_vault"
+      ]
     },
     {
       "name": "Photo Design & Creation",
