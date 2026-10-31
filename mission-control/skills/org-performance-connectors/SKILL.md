@@ -22,11 +22,11 @@ disable-model-invocation: false
 4. Gmail — security sweep (DRAFT outbound only)  
 5. cursor-cloud — unknown-activity gate  
 
-## Auth gaps (ask Tam to connect in Cursor Settings → MCP)
+## Connector status
 
-- Adapter (memory across chats)  
-- Google Sheets (scorecard / deadline sheet)  
-- Slack MCP (phone-reachable alerts)  
+- **Slack MCP** — connected (ask Tam which channel for briefs/alerts)  
+- **Adapter** — declined; use `AGENTS.md` + Notion for durable prefs  
+- **Google Sheets** — declined; use Notion + Calendar for scorecard/deadlines  
 
 ## Rules
 

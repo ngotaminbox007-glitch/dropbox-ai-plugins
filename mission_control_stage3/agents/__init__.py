@@ -1,1 +1,1 @@
-"""Stage 3 agents: Mission Control + office workers."""
+"""Stage 3 agents: Mission Control + per-office helpers."""

@@ -1,71 +1,84 @@
-"""Intake raw tasks into Stage 3 decision records (no risky execution)."""
+"""Intake raw tasks into validated Stage 3 decision records."""
 
 from __future__ import annotations
 
-from datetime import datetime
-from typing import Any
+from . import classification_service, routing_service
+from .common import (
+    DATA,
+    DECISION_FIELDS,
+    audit,
+    next_decision_id,
+    now_iso,
+    read_csv,
+    write_csv,
+)
+
+REQUIRED_FIELDS = ("title",)
 
 
-DECISION_FIELDS = [
-    "id",
-    "title",
-    "status",
-    "urgency",
-    "lead_office",
-    "support_office",
-    "needs_approval",
-    "loop_count",
-    "due_date",
-    "missing_fields",
-    "notes",
-    "created_at",
-    "updated_at",
-]
+def validate_raw_task(raw: dict) -> list[str]:
+    """Return missing required field names."""
+    missing: list[str] = []
+    for field in REQUIRED_FIELDS:
+        if not str(raw.get(field, "")).strip():
+            missing.append(field)
+    return missing
 
 
-def next_decision_id(existing: list[dict[str, str]]) -> str:
-    nums = []
-    for row in existing:
-        raw = (row.get("id") or "").strip()
-        if raw.startswith("D") and raw[1:].isdigit():
-            nums.append(int(raw[1:]))
-    n = max(nums, default=0) + 1
-    return f"D{n:03d}"
+def intake_task(raw: dict) -> dict[str, str]:
+    """
+    Intake a raw task dict.
 
+    Expected keys: title (required), notes, due_date, urgency (optional),
+    requested_action (optional; high-risk actions force approval).
+    """
+    missing = validate_raw_task(raw)
+    title = str(raw.get("title", "")).strip() or "(untitled)"
+    notes = str(raw.get("notes", "")).strip()
+    due_date = str(raw.get("due_date", "")).strip()
+    requested_action = str(raw.get("requested_action", "")).strip().lower()
 
-def intake_raw_task(
-    raw_text: str,
-    *,
-    existing: list[dict[str, str]],
-    classification: dict[str, Any],
-    now: str | None = None,
-) -> dict[str, str]:
-    """Create one decision record from a raw task + classification result."""
-    stamp = now or datetime.now().replace(microsecond=0).isoformat()
-    title = (raw_text or "").strip().split("\n", 1)[0][:120] or "Untitled task"
-    missing = classification.get("missing_fields") or []
-    if isinstance(missing, str):
-        missing_s = missing
-    else:
-        missing_s = ";".join(missing)
+    classification = classification_service.classify_task(
+        title=title,
+        notes=notes,
+        requested_action=requested_action,
+        urgency_hint=str(raw.get("urgency", "")).strip(),
+    )
+    routed = routing_service.assign_offices(classification)
 
-    needs = "yes" if classification.get("needs_approval") else "no"
-    status = "Needs Approval" if needs == "yes" else "Active"
+    decisions = read_csv(DATA / "decisions.csv")
+    created = now_iso()
+    decision_id = next_decision_id(decisions)
+
+    needs_approval = "yes" if classification["needs_approval"] else "no"
+    status = "Needs Approval" if classification["needs_approval"] else "Active"
     if missing:
         status = "Waiting"
+        needs_approval = "yes" if classification["needs_approval"] else needs_approval
 
-    return {
-        "id": next_decision_id(existing),
+    record = {
+        "id": decision_id,
         "title": title,
         "status": status,
-        "urgency": str(classification.get("urgency", "normal")),
-        "lead_office": str(classification.get("lead_office", "Mission Control")),
-        "support_office": str(classification.get("support_office", "Mail & Schedule")),
-        "needs_approval": needs,
+        "urgency": classification["urgency"],
+        "lead_office": routed["lead_office"],
+        "support_office": routed["support_office"],
+        "needs_approval": needs_approval,
+        "missing_fields": ",".join(missing),
         "loop_count": "0",
-        "due_date": str(classification.get("due_date", "")),
-        "missing_fields": missing_s,
-        "notes": str(classification.get("notes", raw_text.strip()[:300])),
-        "created_at": stamp,
-        "updated_at": stamp,
+        "due_date": due_date,
+        "notes": notes
+        or f"Classified to {routed['lead_office']}; action={requested_action or 'none'}",
+        "created_at": created,
+        "updated_at": created,
     }
+
+    decisions.append(record)
+    write_csv(DATA / "decisions.csv", DECISION_FIELDS, decisions)
+    audit(
+        "intake_service",
+        "intake_create",
+        decision_id,
+        f"lead={record['lead_office']} status={record['status']} urgency={record['urgency']}",
+    )
+    return record

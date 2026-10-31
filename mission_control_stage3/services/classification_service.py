@@ -1,82 +1,71 @@
-"""Classify raw tasks by office, urgency, and missing fields."""
+"""Classify raw tasks by office, urgency, and approval need (rule-based Stage 3)."""
 
 from __future__ import annotations
 
-import re
-from typing import Any
+from .common import audit, load_global_rules, load_office_rules
+
+URGENCY_RANK = {"low": 1, "medium": 2, "high": 3, "critical": 4}
 
 
-HIGH_RISK_HINTS = [
-    "send",
-    "pay",
-    "delete",
-    "share",
-    "file to",
-    "filing",
-    "submit",
-    "mail certified",
-    "freeze credit",
-]
-
-URGENT_HINTS = ["urgent", "asap", "today", "overdue", "deadline", "due"]
-
-
-def _score_office(text: str, office: dict[str, Any]) -> int:
-    lower = text.lower()
+def _score_office(text: str, keywords: list[str]) -> int:
     score = 0
-    for kw in office.get("keywords") or []:
-        if kw.lower() in lower:
-            score += 2 if len(kw) > 4 else 1
+    for keyword in keywords:
+        if keyword.lower() in text:
+            score += 1
     return score
 
 
-def classify_task(raw_text: str, office_rules: dict[str, Any]) -> dict[str, Any]:
-    """Return lead/support offices, urgency, approval need, missing fields."""
-    text = (raw_text or "").strip()
-    offices = office_rules.get("offices") or []
-    scored = sorted(
-        (( _score_office(text, o), o) for o in offices),
-        key=lambda x: x[0],
-        reverse=True,
-    )
-    best_score, lead = scored[0] if scored else (0, {"name": "Mission Control", "default_support": "Mail & Schedule"})
+def classify_task(
+    title: str,
+    notes: str = "",
+    requested_action: str = "",
+    urgency_hint: str = "",
+) -> dict:
+    """Return lead office candidate, urgency, and whether approval is required."""
+    offices = load_office_rules()["offices"]
+    global_rules = load_global_rules()
+    high_risk = {a.lower() for a in global_rules.get("high_risk_actions", [])}
+
+    blob = f"{title} {notes}".lower()
+    scored: list[tuple[int, dict]] = []
+    for office in offices:
+        scored.append((_score_office(blob, office.get("keywords", [])), office))
+    scored.sort(key=lambda item: item[0], reverse=True)
+
+    best_score, best_office = scored[0]
     if best_score == 0:
-        lead = next(
-            (o for o in offices if o.get("name") == "Mission Control"),
-            lead,
-        )
+        best_office = next(o for o in offices if o["name"] == "Mission Control")
 
-    lead_name = lead.get("name", "Mission Control")
-    support = lead.get("default_support") or "Mail & Schedule"
-    if support == lead_name:
-        support = "Mail & Schedule" if lead_name != "Mail & Schedule" else "Mission Control"
+    urgency = (urgency_hint or best_office.get("urgency_default") or "medium").lower()
+    if urgency not in URGENCY_RANK:
+        urgency = "medium"
 
-    lower = text.lower()
-    urgency = "high" if any(h in lower for h in URGENT_HINTS) else "normal"
-    needs_approval = any(h in lower for h in HIGH_RISK_HINTS)
+    # Bump urgency for money / VA keywords.
+    if any(k in blob for k in ("urgent", "deadline", "overdue", "today")):
+        urgency = "high" if URGENCY_RANK[urgency] < URGENCY_RANK["high"] else urgency
 
-    missing: list[str] = []
-    if not re.search(r"\d{4}-\d{2}-\d{2}", text):
-        # due date helpful but not always required
-        if any(h in lower for h in ("due", "deadline", "by ")):
-            missing.append("due_date")
-    if needs_approval and "approve" not in lower and "yes-" not in lower:
-        missing.append("explicit_approval")
+    action = requested_action.lower().strip()
+    needs_approval = action in high_risk
+    if not action:
+        # Infer high-risk intent from text.
+        for risk in high_risk:
+            if risk.replace("_", " ") in blob or risk in blob:
+                needs_approval = True
+                action = risk
+                break
 
-    due_match = re.search(r"(20\d{2}-\d{2}-\d{2})", text)
-    due_date = due_match.group(1) if due_match else ""
-
-    notes = f"Classified to {lead_name} (score={best_score})."
-    if needs_approval:
-        notes += " High-risk language detected — approval required before execute."
-
-    return {
-        "lead_office": lead_name,
-        "support_office": support,
+    result = {
+        "office_name": best_office["name"],
+        "office": best_office,
         "urgency": urgency,
         "needs_approval": needs_approval,
-        "missing_fields": missing,
-        "due_date": due_date,
-        "notes": notes,
+        "requested_action": action,
         "score": best_score,
     }
+    audit(
+        "classification_service",
+        "classify",
+        "",
+        f"office={result['office_name']} urgency={urgency} needs_approval={needs_approval}",
+    )
+    return result

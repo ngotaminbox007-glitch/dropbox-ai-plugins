@@ -1,48 +1,64 @@
-"""Route decisions into live / stale queues and reminder / loop logs."""
+"""Route classified tasks to lead + support offices; rebuild live/stale queues."""
 
 from __future__ import annotations
 
-from datetime import date, datetime, timedelta
-from typing import Any
+from datetime import date, timedelta
+
+from .common import (
+    DATA,
+    DECISION_FIELDS,
+    LOOP_FIELDS,
+    REMINDER_FIELDS,
+    audit,
+    live_statuses,
+    load_global_rules,
+    now_iso,
+    read_csv,
+    write_csv,
+)
 
 
-LIVE_STATUSES = {"Active", "Waiting", "Needs Approval"}
-STALE_STATUS = "Stale"
-LOOP_ESCALATE_AT = 3
-
-REMINDER_FIELDS = [
-    "decision_id",
-    "office",
-    "reminder_type",
-    "scheduled_for",
-    "status",
-    "created_at",
-]
-
-LOOP_FIELDS = [
-    "decision_id",
-    "office",
-    "reason",
-    "loop_count",
-    "created_at",
-]
+def assign_offices(classification: dict) -> dict[str, str]:
+    """One lead + one different support office. No lane crossing."""
+    office = classification["office"]
+    lead = office["name"]
+    support = office.get("default_support") or "Mission Control"
+    if support == lead:
+        support = "Mail & Schedule" if lead != "Mail & Schedule" else "Mission Control"
+    audit(
+        "routing_service",
+        "assign_offices",
+        "",
+        f"lead={lead} support={support}",
+    )
+    return {"lead_office": lead, "support_office": support}
 
 
-def split_live_stale(
-    decisions: list[dict[str, str]],
-    live_statuses: list[str] | None = None,
-    stale_status: str = STALE_STATUS,
-) -> tuple[list[dict[str, str]], list[dict[str, str]]]:
-    live_set = set(live_statuses or list(LIVE_STATUSES))
-    live = [r for r in decisions if r.get("status") in live_set]
-    stale = [r for r in decisions if r.get("status") == stale_status]
-    return live, stale
+def rebuild_queues() -> dict[str, int]:
+    """Filter decisions into live_decisions.csv and stale_review.csv."""
+    rules = load_global_rules()
+    live_set = live_statuses()
+    stale_status = rules.get("stale_status", "Stale")
+    decisions = read_csv(DATA / "decisions.csv")
+
+    live = [row for row in decisions if row.get("status") in live_set]
+    stale = [row for row in decisions if row.get("status") == stale_status]
+
+    write_csv(DATA / "live_decisions.csv", DECISION_FIELDS, live)
+    write_csv(DATA / "stale_review.csv", DECISION_FIELDS, stale)
+    audit(
+        "routing_service",
+        "rebuild_queues",
+        "",
+        f"live={len(live)} stale={len(stale)} total={len(decisions)}",
+    )
+    return {"live": len(live), "stale": len(stale), "total": len(decisions)}
 
 
-def build_reminders(
-    live: list[dict[str, str]], created_at: str | None = None
-) -> list[dict[str, str]]:
-    stamp = created_at or datetime.now().replace(microsecond=0).isoformat()
+def create_reminders_for_live() -> int:
+    """Calendar + alarm reminder rows for live items with due dates."""
+    live = read_csv(DATA / "live_decisions.csv")
+    created = now_iso()
     rows: list[dict[str, str]] = []
     for item in live:
         due = (item.get("due_date") or "").strip()
@@ -56,7 +72,7 @@ def build_reminders(
                 "reminder_type": "due_date",
                 "scheduled_for": f"{due}T09:00:00",
                 "status": "scheduled",
-                "created_at": stamp,
+                "created_at": created,
             }
         )
         try:
@@ -69,53 +85,40 @@ def build_reminders(
                     "reminder_type": "alarm",
                     "scheduled_for": f"{day_before}T18:00:00",
                     "status": "scheduled",
-                    "created_at": stamp,
+                    "created_at": created,
                 }
             )
         except ValueError:
             pass
-    return rows
+
+    write_csv(DATA / "reminder_log.csv", REMINDER_FIELDS, rows)
+    audit("routing_service", "create_reminders", "", f"count={len(rows)}")
+    return len(rows)
 
 
-def build_loop_alerts(
-    decisions: list[dict[str, str]],
-    *,
-    escalate_at: int = LOOP_ESCALATE_AT,
-    created_at: str | None = None,
-) -> list[dict[str, str]]:
-    stamp = created_at or datetime.now().replace(microsecond=0).isoformat()
+def refresh_loop_alerts() -> int:
+    """Escalate when loop_count >= threshold."""
+    rules = load_global_rules()
+    threshold = int(rules.get("loop_escalate_at", 3))
+    decisions = read_csv(DATA / "decisions.csv")
+    created = now_iso()
     alerts: list[dict[str, str]] = []
     for item in decisions:
         try:
             loops = int(item.get("loop_count") or "0")
         except ValueError:
             loops = 0
-        if loops < escalate_at:
+        if loops < threshold:
             continue
         alerts.append(
             {
                 "decision_id": item["id"],
                 "office": item.get("lead_office") or "Mission Control",
-                "reason": f"loop_count {loops} >= {escalate_at}; escalate",
+                "reason": f"loop_count {loops} >= {threshold}; escalate",
                 "loop_count": str(loops),
-                "created_at": stamp,
+                "created_at": created,
             }
         )
-    return alerts
-
-
-def validate_lanes(
-    decisions: list[dict[str, str]], office_names: set[str]
-) -> list[str]:
-    warnings: list[str] = []
-    for row in decisions:
-        did = row.get("id", "?")
-        lead = row.get("lead_office", "")
-        support = row.get("support_office", "")
-        if lead not in office_names:
-            warnings.append(f"{did}: unknown lead_office '{lead}'")
-        if support not in office_names:
-            warnings.append(f"{did}: unknown support_office '{support}'")
-        if lead and support and lead == support:
-            warnings.append(f"{did}: lead and support must differ (no lane collapse)")
-    return warnings
+    write_csv(DATA / "loop_alerts.csv", LOOP_FIELDS, alerts)
+    audit("routing_service", "loop_alerts", "", f"count={len(alerts)}")
+    return len(alerts)

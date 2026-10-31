@@ -1,126 +1,53 @@
-"""Mission Control agent — owns intake, routing, brief, approval gate."""
+"""Mission Control agent — safe orchestrator for Stage 3 routing."""
 
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
 
-from agents.office_agent import OfficeAgent
-from services.approval_service import (
-    APPROVAL_FIELDS,
-    AUDIT_FIELDS,
-    audit_event,
-    build_approvals,
+from services import (
+    approval_service,
+    brief_service,
+    intake_service,
+    routing_service,
 )
-from services.brief_service import write_daily_brief
-from services.classification_service import classify_task
-from services.csv_store import append_csv, read_csv, write_csv
-from services.intake_service import DECISION_FIELDS, intake_raw_task
-from services.routing_service import (
-    LOOP_FIELDS,
-    REMINDER_FIELDS,
-    build_loop_alerts,
-    build_reminders,
-    split_live_stale,
-    validate_lanes,
-)
+from services.common import PROMPTS, audit
 
 
-class MissionControlAgent(OfficeAgent):
-    def __init__(
-        self,
-        office: dict[str, Any],
-        global_rules: dict[str, Any],
-        office_rules: dict[str, Any],
-        data_dir: Path,
-        stage_root: Path,
-        prompt_path: Path | None = None,
-    ) -> None:
-        super().__init__(office, global_rules, prompt_path)
-        self.office_rules = office_rules
-        self.data_dir = data_dir
-        self.stage_root = stage_root
+class MissionControlAgent:
+    """Coordinates intake → classify → route → queue → brief. Never executes risky actions."""
 
-    def intake(self, raw_text: str, now: str | None = None) -> dict[str, str]:
-        decisions_path = self.data_dir / "decisions.csv"
-        existing = read_csv(decisions_path)
-        classification = classify_task(raw_text, self.office_rules)
-        record = intake_raw_task(
-            raw_text, existing=existing, classification=classification, now=now
-        )
-        existing.append(record)
-        write_csv(decisions_path, DECISION_FIELDS, existing)
-        append_csv(
-            self.data_dir / "audit_log.csv",
-            AUDIT_FIELDS,
-            audit_event(
-                actor="Mission Control",
-                action="intake",
-                decision_id=record["id"],
-                detail=f"Classified lead={record['lead_office']}",
-                risk="low",
-                now=now,
-            ),
-        )
+    def __init__(self) -> None:
+        self.prompt = (PROMPTS / "mission_control_prompt.txt").read_text(encoding="utf-8")
+
+    def prompt_text(self) -> str:
+        return self.prompt
+
+    def intake(self, raw: dict) -> dict[str, str]:
+        record = intake_service.intake_task(raw)
+        routing_service.rebuild_queues()
+        routing_service.create_reminders_for_live()
+        routing_service.refresh_loop_alerts()
+        audit("mission_control_agent", "intake", record["id"], record["title"])
         return record
 
-    def rebuild_queues(self, now: str | None = None) -> dict[str, Any]:
-        decisions = read_csv(self.data_dir / "decisions.csv")
-        offices = {
-            o["name"] for o in (self.office_rules.get("offices") or []) if o.get("name")
-        }
-        live_statuses = list(self.global_rules.get("live_statuses") or [])
-        stale_status = str(self.global_rules.get("stale_status") or "Stale")
-        escalate_at = int(self.global_rules.get("loop_escalate_at") or 3)
-        max_approvals = int(self.global_rules.get("max_approvals_per_day") or 7)
+    def refresh(self) -> dict[str, int]:
+        counts = routing_service.rebuild_queues()
+        counts["reminders"] = routing_service.create_reminders_for_live()
+        counts["loop_alerts"] = routing_service.refresh_loop_alerts()
+        audit("mission_control_agent", "refresh", "", str(counts))
+        return counts
 
-        warnings = validate_lanes(decisions, offices)
-        live, stale = split_live_stale(
-            decisions, live_statuses=live_statuses, stale_status=stale_status
-        )
-        reminders = build_reminders(live, created_at=now)
-        loops = build_loop_alerts(decisions, escalate_at=escalate_at, created_at=now)
-        approvals = build_approvals(
-            decisions, loops, max_per_day=max_approvals, created_at=now
-        )
+    def brief(self) -> str:
+        return brief_service.generate_daily_brief()
 
-        write_csv(self.data_dir / "live_decisions.csv", DECISION_FIELDS, live)
-        write_csv(self.data_dir / "stale_review.csv", DECISION_FIELDS, stale)
-        write_csv(self.data_dir / "reminder_log.csv", REMINDER_FIELDS, reminders)
-        write_csv(self.data_dir / "loop_alerts.csv", LOOP_FIELDS, loops)
-        write_csv(self.data_dir / "approvals.csv", APPROVAL_FIELDS, approvals)
+    def request_approval(
+        self, decision_id: str, action: str, office: str, notes: str = ""
+    ) -> dict[str, str]:
+        row = approval_service.request_approval(decision_id, action, office, notes)
+        routing_service.rebuild_queues()
+        return row
 
-        write_daily_brief(
-            self.stage_root / "daily_brief.txt",
-            live=live,
-            stale=stale,
-            loops=loops,
-            approvals=approvals,
-            warnings=warnings,
-            max_approvals=max_approvals,
-            generated_at=now,
-        )
-
-        append_csv(
-            self.data_dir / "audit_log.csv",
-            AUDIT_FIELDS,
-            audit_event(
-                actor="Mission Control",
-                action="rebuild_queues",
-                detail=(
-                    f"live={len(live)} stale={len(stale)} "
-                    f"reminders={len(reminders)} loops={len(loops)} "
-                    f"approvals={len(approvals)}"
-                ),
-                risk="low",
-                now=now,
-            ),
-        )
-        return {
-            "live": len(live),
-            "stale": len(stale),
-            "reminders": len(reminders),
-            "loops": len(loops),
-            "approvals": len(approvals),
-            "warnings": warnings,
-        }
+    def decide_approval(
+        self, approval_id: str, approve: bool, notes: str = ""
+    ) -> dict[str, str]:
+        return approval_service.decide_approval(approval_id, approve, notes)

@@ -31,6 +31,7 @@ Maps the 10 office fixes to tools, MCP servers, and skills already available to 
 | **cursor-subscriptions** | `subscribe_timer` for 6 AM brief, PM close-out, alarm backup, security sweep, Friday scorecard |
 | **cursor-cloud** | Overnight/unknown agent detection (`list-cloud-agents`, `get-events`) |
 | **Google Drive** | Public-link / exposure checks for security sweep |
+| **Slack MCP** | Phone-reachable briefs/alerts (channel TBD — ask Tam; candidates `#332`, `#general`) |
 | **Local plugins** | `mission-control`, `dropbox`, **`continual-learning`**, **`advisor`**, **`orchestrate`** (see `/org-performance/`) |
 
 ### Org-performance pack (installed)
@@ -48,10 +49,9 @@ Skill: `org-performance-connectors`.
 | System | Use | Caveat |
 | --- | --- | --- |
 | **Context** `create-monitor` | Watch public deadline pages Tam names | Do not submit PII; needs Tam OK |
-| **Adapter** remember/ask | Durable voice-slip facts + MC decisions | needsAuth — connect in Cursor MCP settings |
-| **Google Sheets** | Deadline + Friday scorecard tables | needsAuth |
+| **Adapter** remember/ask | Durable voice-slip facts + MC decisions | Declined — use `AGENTS.md` + Notion |
+| **Google Sheets** | Deadline + Friday scorecard tables | Declined — use Notion + Calendar |
 | **AgentMail** | Optional SMS/calendar bridge for alarms | Only if Tam designates an inbox; never invent phones |
-| **Slack MCP** | Deliver briefs/alerts to a channel | Connect Slack MCP / name a channel |
 | **Opsera security-scan** | Repo code security | Not for personal login/credit sweeps |
 | **Linear** | Not primary — board of record is Notion | |
 
