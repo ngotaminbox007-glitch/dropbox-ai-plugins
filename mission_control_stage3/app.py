@@ -148,7 +148,12 @@ SEED_DECISIONS = [
 
 
 def seed_data(force: bool = False) -> None:
-    """Create starter CSV files if missing (or overwrite with --force-seed)."""
+    """Create starter CSV files if missing.
+
+    --force-seed overwrites starter decisions/offices only.
+    Approvals and audit logs are never wiped by --force-seed.
+    Derived queues are created empty only when missing; callers rebuild them.
+    """
     DATA.mkdir(parents=True, exist_ok=True)
     decisions_path = DATA / "decisions.csv"
     if force or not decisions_path.exists():
@@ -170,16 +175,19 @@ def seed_data(force: bool = False) -> None:
             )
         write_csv(offices_path, OFFICE_FIELDS, office_rows)
 
-    for name, fields in (
+    # Derived / operational logs: create headers if missing. Never force-wipe
+    # approvals or audit — the safety model depends on those ledgers.
+    create_if_missing = (
         ("live_decisions.csv", DECISION_FIELDS),
         ("stale_review.csv", DECISION_FIELDS),
         ("reminder_log.csv", ["decision_id", "office", "reminder_type", "scheduled_for", "status", "created_at"]),
         ("loop_alerts.csv", ["decision_id", "office", "reason", "loop_count", "created_at"]),
         ("approvals.csv", ["approval_id", "decision_id", "action", "office", "status", "requested_at", "decided_at", "notes"]),
         ("audit_log.csv", ["timestamp", "actor", "action", "decision_id", "detail"]),
-    ):
+    )
+    for name, fields in create_if_missing:
         path = DATA / name
-        if force or not path.exists():
+        if not path.exists():
             write_csv(path, fields, [])
 
     audit("app", "seed_data", "", f"force={force} at {now_iso()}")
@@ -192,7 +200,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--force-seed",
         action="store_true",
-        help="Overwrite starter decisions/offices CSVs",
+        help="Overwrite starter decisions/offices CSVs only (never wipes approvals or audit)",
     )
     sub = parser.add_subparsers(dest="command", required=True)
 
@@ -275,6 +283,8 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     if args.command == "brief":
+        # Always rebuild derived queues from decisions.csv before reading them.
+        mc.refresh()
         text = mc.brief()
         print(text)
         return 0
@@ -297,6 +307,8 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     if args.command == "lane":
+        # Rebuild so lane view is never stuck on an empty/stale derived queue.
+        mc.refresh()
         agent = OfficeAgent(args.office)
         rows = agent.lane_items()
         print(f"{args.office}: {len(rows)} live lane item(s)")

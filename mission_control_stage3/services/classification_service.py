@@ -2,15 +2,26 @@
 
 from __future__ import annotations
 
+import re
+
 from .common import audit, load_global_rules, load_office_rules
 
 URGENCY_RANK = {"low": 1, "medium": 2, "high": 3, "critical": 4}
 
 
+def _token_in_text(token: str, text: str) -> bool:
+    """True when token appears as a whole word/phrase (not a raw substring)."""
+    token = token.lower().strip()
+    if not token:
+        return False
+    pattern = r"(?<!\w)" + re.escape(token) + r"(?!\w)"
+    return re.search(pattern, text, flags=re.IGNORECASE) is not None
+
+
 def _score_office(text: str, keywords: list[str]) -> int:
     score = 0
     for keyword in keywords:
-        if keyword.lower() in text:
+        if _token_in_text(keyword, text):
             score += 1
     return score
 
@@ -40,16 +51,18 @@ def classify_task(
     if urgency not in URGENCY_RANK:
         urgency = "medium"
 
-    # Bump urgency for money / VA keywords.
-    if any(k in blob for k in ("urgent", "deadline", "overdue", "today")):
+    # Bump urgency for explicit urgency words (word-boundary match).
+    if any(_token_in_text(k, blob) for k in ("urgent", "deadline", "overdue", "today")):
         urgency = "high" if URGENCY_RANK[urgency] < URGENCY_RANK["high"] else urgency
 
     action = requested_action.lower().strip()
     needs_approval = action in high_risk
     if not action:
-        # Infer high-risk intent from text.
-        for risk in high_risk:
-            if risk.replace("_", " ") in blob or risk in blob:
+        # Infer high-risk intent from whole words/phrases only.
+        # Prefer longer phrases first so "government filing" wins over "file".
+        for risk in sorted(high_risk, key=len, reverse=True):
+            phrase = risk.replace("_", " ")
+            if _token_in_text(phrase, blob) or _token_in_text(risk, blob):
                 needs_approval = True
                 action = risk
                 break
