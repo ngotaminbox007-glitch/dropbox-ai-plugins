@@ -268,8 +268,11 @@ BOT_PROMPTS = {
 
 
 def write_csv(path: Path, fieldnames: list[str], rows: list[dict[str, str]]) -> None:
+    """Write rows using only fieldnames; ignore extra columns from user-edited CSVs."""
     with path.open("w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer = csv.DictWriter(
+            f, fieldnames=fieldnames, extrasaction="ignore"
+        )
         writer.writeheader()
         writer.writerows(rows)
 
