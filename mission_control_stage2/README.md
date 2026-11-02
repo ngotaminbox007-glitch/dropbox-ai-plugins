@@ -30,6 +30,8 @@ python3 auto_stage2.py
 ```
 
 Regenerates live/stale CSVs, reminder + loop logs, and `daily_brief.txt`.
+Extra columns in a user-edited `decisions.csv` are ignored on write (they do
+not crash live/stale refresh).
 
 ## Hard limits
 
