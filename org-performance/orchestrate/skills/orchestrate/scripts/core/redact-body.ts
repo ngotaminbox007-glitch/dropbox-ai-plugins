@@ -45,17 +45,21 @@ export function assertSafeSlackText(
 }
 
 /**
- * Scan file bytes before Slack upload. Text is checked as UTF-8; binary
- * payloads are still scanned as latin1 so ASCII secret assignments surface.
+ * Scan file bytes before Slack upload. UTF-8 text is checked in full (no
+ * length cutoff — the original buffer is what Slack receives). Binary
+ * payloads get a second latin1 pass so ASCII secret assignments still
+ * surface when UTF-8 decoding would replace invalid sequences.
  */
 export function assertSafeSlackFileContent(
   content: Buffer,
   label = "file upload"
 ): void {
   const asUtf8 = content.toString("utf8");
-  const sample =
-    asUtf8.length > 64_000 ? asUtf8.slice(0, 64_000) : asUtf8;
-  assertSafeSlackText(sample, label, { enforceMaxChars: false });
+  assertSafeSlackText(asUtf8, label, { enforceMaxChars: false });
+  const asLatin1 = content.toString("latin1");
+  if (asLatin1 !== asUtf8) {
+    assertSafeSlackText(asLatin1, label, { enforceMaxChars: false });
+  }
 }
 
 function redactSensitiveAssignments(

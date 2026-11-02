@@ -66,4 +66,16 @@ describe("redactBody", () => {
       assertSafeSlackFileContent(payload, "--file notes.txt")
     ).toThrow(/--file notes\.txt refused/);
   });
+
+  test("assertSafeSlackFileContent refuses secrets past the old 64k cutoff", () => {
+    const prefix = "safe notes\n".repeat(7_000); // > 64_000 chars
+    expect(prefix.length).toBeGreaterThan(64_000);
+    const payload = Buffer.from(
+      `${prefix}api_key=leaked-after-cutoff\n`,
+      "utf8"
+    );
+    expect(() =>
+      assertSafeSlackFileContent(payload, "--file big-notes.txt")
+    ).toThrow(/--file big-notes\.txt refused/);
+  });
 });
